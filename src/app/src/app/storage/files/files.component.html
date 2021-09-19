@@ -1,0 +1,21 @@
+
+
+<ng-container *ngIf="!files.length; else list">
+  <div class="no-content">
+    <p>Não há arquivos a serem listados</p>
+  </div>
+</ng-container>
+<ng-template #list>
+  <div class="list">
+    <div class="box" *ngFor="let item of files" cdkDrag>
+      {{item}}
+      <span style="flex: 1 1 auto;"></span>
+      <button mat-icon-button (click)="download.emit(item)" color="primary" matTooltip="download">
+        <mat-icon>download</mat-icon>
+      </button>
+      <button mat-icon-button (click)="removeItem(item)" color="warn" matTooltip="remover blob">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>

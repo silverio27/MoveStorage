@@ -1,0 +1,45 @@
+<form #form="ngForm" autocomplete="off">
+  <h1>Novo Storage</h1>
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Connection string</mat-label>
+    <input
+      matInput
+      type="password"
+      [(ngModel)]="storage.connectionString"
+      name="connectionString"
+      required
+    />
+    <button
+      *ngIf="storage.connectionString"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="storage.connectionString=''"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="storage.alias" name="name" required />
+    <button
+      *ngIf="storage.alias"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="storage.alias=''"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <button
+    [disabled]="!form.valid"
+    mat-raised-button
+    color="primary"
+    [matDialogClose]="storage"
+  >
+    Criar
+  </button>
+</form>

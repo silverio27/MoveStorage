@@ -1,0 +1,16 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.container {
+  display: flex;
+  background-image: url("./../assets/azure.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: contain;
+  height: calc(100% - 64px);
+}
+
+app-storage {
+  margin: 10px;
+}

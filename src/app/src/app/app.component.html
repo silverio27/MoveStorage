@@ -1,0 +1,24 @@
+<mat-toolbar color="primary">
+  <span>Move Storage</span>
+  <span class="spacer"></span>
+  <button mat-raised-button (click)="createNewStorage()">Novo Storage</button>
+</mat-toolbar>
+
+<div class="container" cdkDropListGroup>
+  <ng-container *ngIf="connections.length > 0; else elseTemplate">
+    <app-storage
+      #storage
+      [connection]="connection"
+      *ngFor="let connection of connections"
+      (remove)="removeConnection($event);"
+      (duplicate)="duplicateConnection($event);"
+      cdkDropList
+      [cdkDropListData]="storage.files"
+      (cdkDropListDropped)="drop($event,  storage.container)"
+      (cdkDropListExited)="exited(storage.container)"
+    ></app-storage>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <img src="assets/files.png" alt="" srcset="" />
+  </ng-template>
+</div>

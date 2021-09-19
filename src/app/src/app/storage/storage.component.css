@@ -1,0 +1,17 @@
+.card {
+  width: 400px;
+}
+
+.header-image {
+  background-image: url("../../assets/blob.png");
+  background-size: cover;
+}
+
+.new-container {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 4px;
+}

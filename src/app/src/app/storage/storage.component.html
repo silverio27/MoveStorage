@@ -1,0 +1,102 @@
+<mat-card class="card">
+  <mat-card-header>
+    <div mat-card-avatar class="header-image"></div>
+    <mat-card-title>{{ connection?.alias }}</mat-card-title>
+    <mat-card-subtitle>Storage Account</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div style="display: flex;">
+      <mat-form-field appearance="outline">
+        <mat-label>Container</mat-label>
+        <mat-select
+          [(ngModel)]="container.name"
+          name="container"
+          (ngModelChange)="getFiles(connection.connectionString, container.name);"
+        >
+          <mat-option *ngFor="let container of containers" [value]="container">
+            {{container}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span style="flex: 1 1 auto;"></span>
+      <button
+        mat-icon-button
+        color="primary"
+        matTooltip="Novo container"
+        cdkOverlayOrigin
+        #trigger="cdkOverlayOrigin"
+        (click)="showNewContainer = !showNewContainer"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <!-- This template displays the overlay content and is connected to the button -->
+      <ng-template
+        cdkConnectedOverlay
+        [cdkConnectedOverlayOrigin]="trigger"
+        [cdkConnectedOverlayOpen]="showNewContainer"
+      >
+        <div class="new-container mat-elevation-z5" >
+          <mat-form-field  appearance="outline">
+            <mat-label>Container</mat-label>
+            <input #containerName matInput >
+          </mat-form-field>
+          <button
+            mat-icon-button
+            color="primary"
+            matTooltip="Adicionar"
+            (click)="showNewContainer = false; addContainer(connection.connectionString, containerName.value)"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </ng-template>
+      <button
+        mat-icon-button
+        matTooltip="Excluir container"
+        color="warn"
+        (click)="removeContainer(connection.connectionString, container.name)"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="getContainers(connection.connectionString)"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-progress-bar
+      mode="indeterminate"
+      [style.display]="load ? 'block':'none'"
+    ></mat-progress-bar>
+    <files
+      #filesSource
+      [files]="files"
+      (remove)="removeFile(container,$event)"
+      (download)="download(container, $event)"
+    ></files>
+  </mat-card-content>
+  <mat-card-actions style="display: flex;">
+    <button-upload (upload)="upload(container, $event)"></button-upload>
+
+    <button
+      color="warn"
+      mat-icon-button
+      matTooltip="Encerrar conexão"
+      (click)="remove.emit(connection)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <button
+      color="primary"
+      mat-icon-button
+      matTooltip="Duplicar conexão"
+      (click)="duplicate.emit(connection)"
+    >
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
