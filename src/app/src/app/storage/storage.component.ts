@@ -26,6 +26,7 @@ export class StorageComponent implements OnInit {
 
   ngOnInit(): void {
     this.container.connection = this.connection;
+    console.log(this.connection.connectionString)
     this.getContainers(this.connection.connectionString);
   }
 
@@ -59,6 +60,8 @@ export class StorageComponent implements OnInit {
   getContainers(connectionString: string) {
     this.storageService.getContainers(connectionString).subscribe((x) => {
       this.containers = x;
+    },(err)=>{
+      console.log(err)
     });
   }
   removeFile(container: Container, file: string) {

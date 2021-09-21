@@ -2,33 +2,28 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import {
-  MoveFile,
-  NewContainer,
-  StorageConnection,
-  Upload,
-} from "./istorage";
+import { MoveFile, NewContainer, StorageConnection, Upload } from "./istorage";
 
+const url = environment.serviceStorageUrl;
 @Injectable({
   providedIn: "root",
 })
 export class StorageService {
   constructor(private http: HttpClient) {}
   getContainers(connectionString: string): Observable<string[]> {
-    const url = environment.serviceStorageUrl;
-    return this.http.get<string[]>(`${url}containers/${connectionString}`);
+    return this.http.get<string[]>(
+      `${url}containers/${encodeURIComponent(connectionString)}`
+    );
   }
   getFiles(
     connectionString: string,
     containerName: string
   ): Observable<string[]> {
-    const url = environment.serviceStorageUrl;
     return this.http.get<string[]>(
-      `${url}files/${connectionString}/${containerName}`
+      `${url}files/${encodeURIComponent(connectionString)}/${containerName}`
     );
   }
   upload(upload: Upload): Observable<string> {
-    const url = environment.serviceStorageUrl;
     return this.http.post<string>(`${url}upload`, upload);
   }
   removeFile(
@@ -36,30 +31,32 @@ export class StorageService {
     containerName: string,
     fileName: string
   ) {
-    const url = environment.serviceStorageUrl;
     return this.http.delete<string>(
-      `${url}file/${connectionString}/${containerName}/${fileName}`
+      `${url}file/${encodeURIComponent(
+        connectionString
+      )}/${containerName}/${fileName}`
     );
   }
   removeContainer(connectionString: string, containerName: string) {
-    const url = environment.serviceStorageUrl;
     return this.http.delete<string>(
-      `${url}container/${connectionString}/${containerName}`
+      `${url}container/${encodeURIComponent(connectionString)}/${containerName}`
     );
   }
   moveFile(moveFile: MoveFile) {
-    const url = environment.serviceStorageUrl;
     return this.http.post<string>(`${url}move`, moveFile);
   }
   addContainer(newContainer: NewContainer) {
-    const url = environment.serviceStorageUrl;
     return this.http.post<string>(`${url}container`, newContainer);
   }
   download(connectionString: string, containerName: string, fileName: string) {
-    const url = environment.serviceStorageUrl;
-    return this.http.get<Blob>(`${url}download/${connectionString}/${containerName}/${fileName}`, {
-      responseType: "blob" as "json",
-    });
+    return this.http.get<Blob>(
+      `${url}download/${encodeURIComponent(
+        connectionString
+      )}/${containerName}/${fileName}`,
+      {
+        responseType: "blob" as "json",
+      }
+    );
   }
   addConnection(connection: StorageConnection) {
     let connections = this.getConnections();
