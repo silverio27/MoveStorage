@@ -17,14 +17,12 @@ namespace api.Storage
     {
 
         [HttpGet("containers/{connectionString}")]
-        public ActionResult<dynamic> GetContainers(string connectionString)
+        public ActionResult GetContainers(string connectionString)
         {
             var storage = new BlobServiceClient(DecodeUrl(connectionString));
             var response = storage.GetBlobContainers().Select(x => x.Name);
             return Ok(response);
         }
-
-        
 
         [HttpDelete("container/{connectionString}/{containerName}")]
         public ActionResult RemoveContainer(string connectionString, string containerName)
@@ -43,7 +41,7 @@ namespace api.Storage
         }
 
         [HttpGet("files/{connectionString}/{containerName}")]
-        public ActionResult<dynamic> GetFiles(string connectionString, string containerName)
+        public ActionResult GetFiles(string connectionString, string containerName)
         {
             var container = new BlobContainerClient(DecodeUrl(connectionString), containerName);
             var response = container.GetBlobs().Select(x => x.Name);
